@@ -1,0 +1,22 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "go.installDependenciesWhenBuilding": true,
+    "go.autocompleteUnimportedPackages": true,
+    "go.lintTool": "golangci-lint",
+    "go.formatTool": "goimports",
+    "[go]": {
+      "editor.insertSpaces": true,
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    "editor.formatOnSave": true,
+    "editor.tabCompletion": "on"
+  }
+}

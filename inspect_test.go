@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/jhillyerd/enmime"
-	"github.com/jhillyerd/enmime/internal/test"
+	"github.com/malview/enmime/internal/test"
 )
 
 func TestDecodeHeaders(t *testing.T) {
