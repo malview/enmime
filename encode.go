@@ -3,6 +3,7 @@ package enmime
 import (
 	"bufio"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"mime"
 	"mime/quotedprintable"
@@ -38,7 +39,10 @@ func (p *Part) Encode(writer io.Writer) error {
 	b := bufio.NewWriter(writer)
 	p.encodeHeader(b)
 	if len(p.Content) > 0 {
-		b.Write(crnl)
+		_, err := b.Write(crnl)
+		if err != nil {
+			return err
+		}
 		if err := p.encodeContent(b, cte); err != nil {
 			return err
 		}
@@ -51,15 +55,27 @@ func (p *Part) Encode(writer io.Writer) error {
 	marker := endMarker[:len(endMarker)-2]
 	c := p.FirstChild
 	for c != nil {
-		b.Write(marker)
-		b.Write(crnl)
+		_, err := b.Write(marker)
+		if err != nil {
+			return err
+		}
+		_, err = b.Write(crnl)
+		if err != nil {
+			return err
+		}
 		if err := c.Encode(b); err != nil {
 			return err
 		}
 		c = c.NextSibling
 	}
-	b.Write(endMarker)
-	b.Write(crnl)
+	_, err := b.Write(endMarker)
+	if err != nil {
+		return err
+	}
+	_, err = b.Write(crnl)
+	if err != nil {
+		return err
+	}
 	return b.Flush()
 }
 
@@ -145,7 +161,10 @@ func (p *Part) encodeHeader(b *bufio.Writer) {
 			// _ used to prevent early wrapping
 			wb := stringutil.Wrap(76, k, ":_", encv, "\r\n")
 			wb[len(k)+1] = ' '
-			b.Write(wb)
+			_, err := b.Write(wb)
+			if err != nil {
+				fmt.Println(err)
+			}
 		}
 	}
 }
@@ -166,7 +185,10 @@ func (p *Part) encodeContent(b *bufio.Writer, cte transferEncoding) (err error) 
 			if _, err = b.Write(text[:lineLen]); err != nil {
 				return err
 			}
-			b.Write(crnl)
+			_, err := b.Write(crnl)
+			if err != nil {
+				return err
+			}
 			text = text[lineLen:]
 		}
 	case teQuoted:

@@ -10,7 +10,6 @@ import (
 	"net/textproto"
 	"os"
 	"path/filepath"
-	"reflect"
 	"time"
 
 	"github.com/malview/enmime/internal/stringutil"
@@ -330,10 +329,4 @@ func (p MailBuilder) Send(addr string, a smtp.Auth) error {
 		recips = append(recips, a.Address)
 	}
 	return smtp.SendMail(addr, a, p.from.Address, recips, buf.Bytes())
-}
-
-// Equals uses the reflect package to test two MailBuilder structs for equality, primarily for unit
-// tests.
-func (p MailBuilder) Equals(o MailBuilder) bool {
-	return reflect.DeepEqual(p, o)
 }

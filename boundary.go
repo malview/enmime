@@ -14,21 +14,21 @@ import (
 // This constant needs to be at least 76 for this package to work correctly.  This is because
 // \r\n--separator_of_len_70- would fill the buffer and it wouldn't be safe to consume a single byte
 // from it.
-const peekBufferSize = 4096
+//const peekBufferSize = 4096
 
 var errNoBoundaryTerminator = stderrors.New("expected boundary not present")
 
 type boundaryReader struct {
-	finished         bool          // No parts remain when finished
-	partsRead        int           // Number of parts read thus far
-	atPartStart      bool          // Whether the current part is at its beginning
-	r                *bufio.Reader // Source reader
-	nlPrefix         []byte        // NL + MIME boundary prefix
-	prefix           []byte        // MIME boundary prefix
-	final            []byte        // Final boundary prefix
-	buffer           *bytes.Buffer // Content waiting to be read
-	crBoundaryPrefix bool          // Flag for CR in CRLF + MIME boundary
-	unbounded        bool          // Flag to throw errNoBoundaryTerminator
+	finished    bool          // No parts remain when finished
+	partsRead   int           // Number of parts read thus far
+	atPartStart bool          // Whether the current part is at its beginning
+	r           *bufio.Reader // Source reader
+	nlPrefix    []byte        // NL + MIME boundary prefix
+	prefix      []byte        // MIME boundary prefix
+	final       []byte        // Final boundary prefix
+	buffer      *bytes.Buffer // Content waiting to be read
+	//crBoundaryPrefix bool          // Flag for CR in CRLF + MIME boundary
+	unbounded bool // Flag to throw errNoBoundaryTerminator
 }
 
 // newBoundaryReader returns an initialized boundaryReader
